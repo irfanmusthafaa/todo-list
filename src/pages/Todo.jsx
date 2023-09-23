@@ -7,8 +7,6 @@ import { UpdateForm } from "../assets/components/UpdateForm";
 import { ButtonDeleteAll } from "../assets/components/ButtonDeleteAll";
 import { ButtonDeleteDone } from "../assets/components/ButtonDeleteDone";
 
-import Search from "../assets/icons/search.svg";
-
 export const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
