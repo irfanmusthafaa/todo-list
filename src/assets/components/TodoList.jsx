@@ -4,7 +4,7 @@ import { ButtonTodo } from "./ButtonTodo";
 import { ListTasks } from "./ListTasks";
 import { ButtonDone } from "./ButtonDone";
 
-export const TodoList = ({ todos, deleteTask, markDone, setUpdateData, search }) => {
+export const TodoList = ({ todos, deleteTask, markDone, setUpdateData, dataSearch }) => {
   const [type, setType] = useState("");
 
   // sort all
@@ -32,42 +32,29 @@ export const TodoList = ({ todos, deleteTask, markDone, setUpdateData, search })
         <ButtonDone clickedDone={() => sortDone()} />
         <ButtonTodo clickedTodo={() => sortTodo()} />
       </div>
-
       {/* Jika Task tidak ada */}
       {todos && todos.length ? "" : <div className="my-10 text-center">"No Tasks..."</div>}
       {/* Type All */}
       {todos &&
         type === "" &&
-        !search &&
-        todos.map((todo, index) => <ListTasks todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
-
+        todos
+          .sort((a, b) => {
+            return b.id - a.id;
+          })
+          .map((todo) => <ListTasks key={todo.id} todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
       {/* Type Done */}
 
       {todos &&
         type === "sortDone" &&
-        !search &&
         todos
           .filter((todo) => todo.complete === true)
-          .map((todo, index) => <ListTasks todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
-
+          .map((todo) => <ListTasks key={todo.id} todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
       {/* Type Todo */}
-
       {todos &&
         type === "sortTodo" &&
-        !search &&
         todos
           .filter((todo) => todo.complete === false)
-          .map((todo, index) => <ListTasks todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
-
-      {/*  Search */}
-
-      {todos &&
-        search &&
-        todos
-          .filter((todo) => {
-            return search.toLowerCase() === "" ? todo : todo.task.toLowerCase().includes(search);
-          })
-          .map((todo, index) => <ListTasks todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
+          .map((todo) => <ListTasks key={todo.id} todo={todo} markDone={markDone} setUpdateData={setUpdateData} deleteTask={deleteTask} />)}
     </>
   );
 };

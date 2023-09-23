@@ -7,14 +7,18 @@ import { UpdateForm } from "../assets/components/UpdateForm";
 import { ButtonDeleteAll } from "../assets/components/ButtonDeleteAll";
 import { ButtonDeleteDone } from "../assets/components/ButtonDeleteDone";
 
+import Search from "../assets/icons/search.svg";
+
 export const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [updateData, setUpdateData] = useState("");
   const [search, setSearch] = useState("");
+  const [dataAwal, setDataAwal] = useState([]);
 
   useEffect(() => {
     setTodos(datas);
+    setDataAwal(datas);
   }, []);
 
   // Add task
@@ -62,7 +66,6 @@ export const Todo = () => {
       task: e.target.value,
       complete: updateData.complete ? true : false,
     };
-    console.log(newEntry, "New Entry");
     setUpdateData(newEntry);
   };
 
@@ -86,11 +89,16 @@ export const Todo = () => {
     setTodos([]);
   };
 
+  //search
+  const filterData = (e) => {
+    setTodos(dataAwal.filter((valueFilter) => valueFilter.task.toLowerCase().includes(search.toLowerCase())));
+  };
+
   return (
     <div className="w-[720px]  bg-[#f0f0f0] mt-10 rounded-3xl pb-5">
       <div className="w-[80%]  mx-auto mt-4 py-10">
         <h1 className="text-center mb-5 text-[#213555] font-bold text-2xl ">Todo Search</h1>
-        <InputSearch value={search} setSearch={setSearch} />
+        <InputSearch setSearch={setSearch} filterData={filterData} />
       </div>
 
       <div className="w-[80%]  mx-auto mt-4 ">
@@ -103,7 +111,7 @@ export const Todo = () => {
 
         {/* Display ToDos */}
         <div className="mb-[3rem]">
-          <TodoList todos={todos} deleteTask={deleteTask} markDone={markDone} setUpdateData={setUpdateData} search={search} />
+          <TodoList todos={todos} deleteTask={deleteTask} markDone={markDone} setUpdateData={setUpdateData} />
         </div>
         <div className="flex justify-around gap-5 mb-[2rem]">
           <ButtonDeleteDone clickedDeleteDone={() => deleteDoneTask()} />
